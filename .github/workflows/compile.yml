@@ -17,6 +17,8 @@ jobs:
   build_and_test:
     name: Build & test on ${{ matrix.config.os }} with ${{ matrix.config.cc }} and ${{ matrix.config.cxx }}.
     runs-on: ${{ matrix.config.os }}
+    env:
+      BUILD_DIR: "/Users/runner/work/cache_test/cache_test/build_debug"
     strategy:
       matrix:
         config:
@@ -49,24 +51,24 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
 
       - name: Cache build directories
-        id: setup-directories
+        id: cache
         uses: actions/cache@v2
         with:
-          path: /Users/runner/work/cache_test/cache_test/build_debug
+          path: ${{ env.BUILD_DIR }}
           key: ${{ runner.os }}-build_debug
-
-      - name: List build directory contents
-        run: ls -l /Users/runner/work/cache_test/cache_test/build_debug
 
       - name: Setup build directories (if needed)
         if: steps.setup-directories.outputs.cache-hit != 'true'
-        run: mkdir /Users/runner/work/cache_test/cache_test/build_debug
+        run: mkdir ${{ env.BUILD_DIR }}
+
+      - name: List build directory contents
+        run: ls -l ${{ env.BUILD_DIR }}
 
       - name: CMake configure
-        run: cmake -B /Users/runner/work/cache_test/cache_test/build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
       - name: CMake Build (Debug)
-        run: cmake --build /Users/runner/work/cache_test/cache_test/build_debug -- ${{ matrix.config.build_options }}
+        run: cmake --build ${{ env.BUILD_DIR }} -- ${{ matrix.config.build_options }}
 
 #      - name: Install gtest
 #        uses: MarkusJx/googletest-installer@v1.1
