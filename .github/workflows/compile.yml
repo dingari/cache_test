@@ -20,12 +20,12 @@ jobs:
     strategy:
       matrix:
         config:
-          - {
-            name: "Windows Latest - MSVC",
-            os: windows-latest,
-            cc: "cl", cxx: "cl",
-            extra_cmake_flags: "-G \"Visual Studio 16\"",
-          }
+#          - {
+#            name: "Windows Latest - MSVC",
+#            os: windows-latest,
+#            cc: "cl", cxx: "cl",
+#            extra_cmake_flags: "-G \"Visual Studio 16\"",
+#          }
           - {
             name: "MacOS Latest - Clang",
             os: macos-latest,
@@ -38,11 +38,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          clean: false
           submodules: 'recursive'
-
-      - name: Setup directories
-        run: mkdir build_release build_debug build_tests_debug build_tests_release
 
       - name: Setup MSVC
         if: runner.os == 'Windows'
@@ -52,8 +48,19 @@ jobs:
         if: runner.os == 'Windows'
         uses: NuGet/setup-nuget@v1.0.5
 
-      - name: CMake Configure (Debug)
-        run: cmake -B build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+      - name: Cache build directories
+        id: setup-directories
+        uses: actions/cache@v2
+        with:
+          path: $ENV{GITHUB_WORKSPACE}/build_debug
+          key: ${{ runner.os }}-build_debug
+
+      - name: Setup build directories (if needed)
+        if: steps.setup-directories.outputs.cache-hit != 'true'
+        run: mkdir $ENV{GITHUB_WORKSPACE}/build_debug
+
+      - name: CMake configure
+        run: cmake -B $ENV{GITHUB_WORKSPACE}/build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
       - name: CMake Build (Debug)
         run: cmake --build build_debug -- ${{ matrix.config.build_options }}
