@@ -1,0 +1,68 @@
+name: compile
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_and_test:
+    name: Build & test on ${{ matrix.config.os }} with ${{ matrix.config.cc }} and ${{ matrix.config.cxx }}.
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - {
+            name: "Windows Latest - MSVC",
+            os: windows-latest,
+            cc: "cl", cxx: "cl",
+            extra_cmake_flags: "-G \"Visual Studio 16\"",
+          }
+          - {
+            name: "MacOS Latest - Clang",
+            os: macos-latest,
+            cc: "cc", cxx: "c++",
+            extra_cmake_flags: "-DCMAKE_OSX_ARCHITECTURES=x86_64",
+            build_options: "-j16",
+          }
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MY_REPO_PAT }}
+          submodules: 'recursive'
+
+      - name: Setup directories
+        run: mkdir build_release build_debug build_tests_debug build_tests_release
+
+      - name: Setup MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup NuGet.exe for use with actions
+        if: runner.os == 'Windows'
+        uses: NuGet/setup-nuget@v1.0.5
+
+      - name: CMake Configure (Debug)
+        run: cmake -B build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+
+      - name: CMake Build (Debug)
+        run: cmake --build build_debug -- ${{ matrix.config.build_options }}
+
+#      - name: Install gtest
+#        uses: MarkusJx/googletest-installer@v1.1
+#
+#      - name: Run all tests
+#        run: |
+#          cd build_debug/Tests
+#          ctest -C Debug
+#          cd ../..
