@@ -52,15 +52,15 @@ jobs:
         id: setup-directories
         uses: actions/cache@v2
         with:
-          path: $ENV{GITHUB_WORKSPACE}/build_debug
+          path: ${{ env.GITHUB_WORKSPACE }}/build_debug
           key: ${{ runner.os }}-build_debug
 
       - name: Setup build directories (if needed)
         if: steps.setup-directories.outputs.cache-hit != 'true'
-        run: mkdir $ENV{GITHUB_WORKSPACE}/build_debug
+        run: mkdir ${{ env.GITHUB_WORKSPACE }}/build_debug
 
       - name: CMake configure
-        run: cmake -B $ENV{GITHUB_WORKSPACE}/build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        run: cmake -B ${{ env.GITHUB_WORKSPACE }}/build_debug -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
       - name: CMake Build (Debug)
         run: cmake --build build_debug -- ${{ matrix.config.build_options }}
