@@ -54,7 +54,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo ${{ env.GITHUB_SHA }}
-          ls -al ${{ env.DIRECTORY }}
+          ls -al $${ env.GITHUB_WORKSPACE }}/${{ env.DIRECTORY }}
 
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
