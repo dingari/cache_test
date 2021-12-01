@@ -79,6 +79,9 @@ jobs:
       - name: List build directory contents
         run: ls -l ${{ env.BUILD_DIR }}
 
+      - name: manifest.txt
+        run: cat manifest.txt
+
 #      - name: Install gtest
 #        uses: MarkusJx/googletest-installer@v1.1
 #
