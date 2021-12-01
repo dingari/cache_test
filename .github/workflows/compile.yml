@@ -18,7 +18,7 @@ jobs:
     name: Build & test on ${{ matrix.config.os }} with ${{ matrix.config.cc }} and ${{ matrix.config.cxx }}.
     runs-on: ${{ matrix.config.os }}
     env:
-      BUILD_DIR: "$GITHUB_WORKSPACE/build_debug"
+      BUILD_DIR: "build_debug"
     strategy:
       matrix:
         config:
