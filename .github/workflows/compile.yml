@@ -81,7 +81,9 @@ jobs:
 
       - name: manifest.txt
         run: |
+          ls -l $GITHUB_WORKSPACE
           ls -l $GITHUB_WORKSPACE/..
+          ls -l $GITHUB_WORKSPACE/../..
 #        run: cat manifest.txt
 
 #      - name: Install gtest
