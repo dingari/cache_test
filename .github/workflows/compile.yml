@@ -48,7 +48,12 @@ jobs:
         uses: actions/checkout@v2
 #        if: steps.cache.outputs.cache-hit != 'true'
         with:
-          submodules: 'recursive'
+          submodules: 'recursive
+
+      - name: Foobar
+        run: |
+          echo "GITHUB_SHA: $GITHUB_SHA"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
 
 #      - name: Restore repository
 #        if: steps.cache.outputs.cache-hit == 'true'
