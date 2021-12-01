@@ -58,7 +58,7 @@ jobs:
 
       - name: Cache build directories
         id: cache
-        uses: actions/cache@v2
+        uses: davidsbond/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
           key: ${{ runner.os }}-build_debug-1
