@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "GITHUB_SHA: $GITHUB_SHA"
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          echo "BUILD_DIR: ${{ env.FOO }}"
+          echo "BUILD_DIR: ${{ env.BUILD_DIR }}"
 
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
