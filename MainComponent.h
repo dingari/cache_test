@@ -21,8 +21,6 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    int i = 42;
-
 private:
     //==============================================================================
     // Your private member variables go here...
