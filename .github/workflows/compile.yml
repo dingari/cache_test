@@ -37,24 +37,25 @@ jobs:
           }
 
     steps:
-      - name: Cache
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.DIRECTORY }}
-          key: ${{ runner.os }}-repo
+#      - name: Cache
+#        id: cache
+#        uses: actions/cache@v2
+#        with:
+#          path: ${{ env.DIRECTORY }}
+#          key: ${{ runner.os }}-repo
 
       - name: Checkout repository
         uses: actions/checkout@v2
-        if: steps.cache.outputs.cache-hit != 'true'
+#        if: steps.cache.outputs.cache-hit != 'true'
         with:
           submodules: 'recursive'
 
-      - name: Restore repository
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: |
-          echo ${{ env.GITHUB_SHA }}
-          ls -al ${{ env.GITHUB_WORKSPACE }}/${{ env.DIRECTORY }}
+#      - name: Restore repository
+#        if: steps.cache.outputs.cache-hit == 'true'
+#        run: |
+#          echo
+#          echo ${{ env.GITHUB_SHA }}
+#          ls -al ${{ env.GITHUB_WORKSPACE }}/${{ env.DIRECTORY }}
 
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
