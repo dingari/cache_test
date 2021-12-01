@@ -75,6 +75,9 @@ jobs:
 
       - name: CMake Build (Debug)
         run: cmake --build ${{ env.BUILD_DIR }} -- ${{ matrix.config.build_options }}
+        
+      - name: List build directory contents
+        run: ls -l ${{ env.BUILD_DIR }}
 
 #      - name: Install gtest
 #        uses: MarkusJx/googletest-installer@v1.1
