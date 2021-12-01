@@ -19,6 +19,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     env:
       DIRECTORY: "cache_test"
+      FOO: "$GITHUB_WORKSPACE"
     strategy:
       matrix:
         config:
@@ -37,16 +38,8 @@ jobs:
           }
 
     steps:
-#      - name: Cache
-#        id: cache
-#        uses: actions/cache@v2
-#        with:
-#          path: ${{ env.DIRECTORY }}
-#          key: ${{ runner.os }}-repo
-
       - name: Checkout repository
         uses: actions/checkout@v2
-#        if: steps.cache.outputs.cache-hit != 'true'
         with:
           submodules: 'recursive'
 
@@ -54,17 +47,11 @@ jobs:
         run: |
           echo "GITHUB_SHA: $GITHUB_SHA"
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "env.FOO: ${{ env.FOO }}"
 
-#      - name: Restore repository
-#        if: steps.cache.outputs.cache-hit == 'true'
-#        run: |
-#          echo
-#          echo ${{ env.GITHUB_SHA }}
-#          ls -al ${{ env.GITHUB_WORKSPACE }}/${{ env.DIRECTORY }}
-
-#      - name: Setup MSVC
-#        if: runner.os == 'Windows'
-#        uses: ilammy/msvc-dev-cmd@v1
+##      - name: Setup MSVC
+##        if: runner.os == 'Windows'
+##        uses: ilammy/msvc-dev-cmd@v1
 #
 #      - name: Setup NuGet.exe for use with actions
 #        if: runner.os == 'Windows'
