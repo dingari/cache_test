@@ -69,7 +69,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
-          key: ${{ runner.os }}-build_debug-${{ steps.timestamp.outputs.timestamp }}
+          key: ${{ runner.os }}-foo-${{ steps.timestamp.outputs.timestamp }}
           restore-keys: |
             ${{ runner.os }}-build_debug-
 
