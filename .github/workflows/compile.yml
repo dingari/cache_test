@@ -61,6 +61,7 @@ jobs:
         uses: davidsbond/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
+          update: true
           key: ${{ runner.os }}-build_debug-1
 
       - name: Setup build directories (if needed)
