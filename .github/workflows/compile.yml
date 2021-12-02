@@ -48,6 +48,14 @@ jobs:
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           echo "BUILD_DIR: ${{ env.BUILD_DIR }}"
 
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%s')"
+
+      - name: Install tree
+        run: |
+          brew install tree
+
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
 #        uses: ilammy/msvc-dev-cmd@v1
@@ -61,17 +69,20 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
-          key: ${{ runner.os }}-build_debug-3
+          key: ${{ runner.os }}-build_debug-${{ steps.timestamp.outputs.timestamp }}
+          restore-keys: |
+            ${{ runner.os }}-build_debug-
 
-      - name: Setup build directories (if needed)
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: mkdir ${{ env.BUILD_DIR }}
+      - name: echo timestamp
+        run: echo "Timestamp - ${{ steps.timestamp.outputs.timestamp }}"
 
       - name: List build directory contents
         run: tree ${{ env.BUILD_DIR }}
 
       - name: CMake configure
-        run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+        run: |
+         mkdir -p ${{ env.BUILD_DIR }}
+         cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
 
       - name: CMake Build (Debug)
         run: cmake --build ${{ env.BUILD_DIR }} -- ${{ matrix.config.build_options }}
