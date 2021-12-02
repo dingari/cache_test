@@ -73,9 +73,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build_debug-
 
-      - name: Setup build directories (if needed)
-        run:
-
       - name: echo timestamp
         run: echo "Timestamp - ${{ steps.timestamp.outputs.timestamp }}"
 
