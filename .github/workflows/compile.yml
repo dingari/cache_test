@@ -48,6 +48,10 @@ jobs:
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           echo "BUILD_DIR: ${{ env.BUILD_DIR }}"
 
+      - name: Install tree
+        run: |
+          brew install tree
+
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
 #        uses: ilammy/msvc-dev-cmd@v1
@@ -61,14 +65,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
-          key: ${{ runner.os }}-build_debug-1
+          key: ${{ runner.os }}-build_debug-2
 
       - name: Setup build directories (if needed)
         if: steps.cache.outputs.cache-hit != 'true'
         run: mkdir ${{ env.BUILD_DIR }}
 
       - name: List build directory contents
-        run: ls -l ${{ env.BUILD_DIR }}
+        run: tree ${{ env.BUILD_DIR }}
 
 #      - name: CMake configure
 #        run: ls -l ${{ env.BUILD_DIR }} && cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Debug ${{ matrix.config.extra_cmake_flags }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
@@ -76,16 +80,15 @@ jobs:
 #      - name: CMake Build (Debug)
 #        run: cmake --build ${{ env.BUILD_DIR }} -- ${{ matrix.config.build_options }}
 
-      - name: List build directory contents
-        run: ls -l ${{ env.BUILD_DIR }}
+#      - name: List build directory contents
+#        run: ls -l ${{ env.BUILD_DIR }}
 
-      - name: manifest.txt
+      - name: Poking around...
         run: |
           brew install tree
           ls -l $GITHUB_WORKSPACE
           ls -l $GITHUB_WORKSPACE/..
-          tree $GITHUB_WORKSPACE/../..
-#        run: cat manifest.txt
+          ls $GITHUB_WORKSPACE/../..
 
 #      - name: Install gtest
 #        uses: MarkusJx/googletest-installer@v1.1
