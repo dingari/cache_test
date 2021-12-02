@@ -71,7 +71,7 @@ jobs:
           path: ${{ env.BUILD_DIR }}
           key: ${{ runner.os }}-foo-${{ steps.timestamp.outputs.timestamp }}
           restore-keys: |
-            ${{ runner.os }}-build_debug-
+            ${{ runner.os }}-foo-
 
       - name: echo timestamp
         run: echo "Timestamp - ${{ steps.timestamp.outputs.timestamp }}"
