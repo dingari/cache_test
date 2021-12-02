@@ -69,7 +69,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
-          key: ${{ runner.os }}-build_debug-3
+          key: ${{ runner.os }}-build_debug-${{ steps.timestamp.outputs.timestamp }}
+          restore-key: ${{ runner.os }}-build_debug-
 
       - name: Setup build directories (if needed)
         if: steps.cache.outputs.cache-hit != 'true'
