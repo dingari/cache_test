@@ -58,7 +58,7 @@ jobs:
 
       - name: Cache build directories
         id: cache
-        uses: davidsbond/cache@v2
+        uses: davidsbond/cache@master
         with:
           path: ${{ env.BUILD_DIR }}
           update: true
