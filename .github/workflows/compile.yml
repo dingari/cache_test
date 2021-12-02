@@ -81,6 +81,7 @@ jobs:
 
       - name: manifest.txt
         run: |
+          brew install tree
           ls -l $GITHUB_WORKSPACE
           ls -l $GITHUB_WORKSPACE/..
           tree $GITHUB_WORKSPACE/../..
