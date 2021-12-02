@@ -48,10 +48,6 @@ jobs:
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           echo "BUILD_DIR: ${{ env.BUILD_DIR }}"
 
-      - name: Install tree
-        run: |
-          brew install tree
-
 #      - name: Setup MSVC
 #        if: runner.os == 'Windows'
 #        uses: ilammy/msvc-dev-cmd@v1
