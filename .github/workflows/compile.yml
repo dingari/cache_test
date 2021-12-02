@@ -58,10 +58,9 @@ jobs:
 
       - name: Cache build directories
         id: cache
-        uses: davidsbond/cache@master
+        uses: actions/cache@v2
         with:
           path: ${{ env.BUILD_DIR }}
-          update: true
           key: ${{ runner.os }}-build_debug-1
 
       - name: Setup build directories (if needed)
@@ -84,7 +83,7 @@ jobs:
         run: |
           ls -l $GITHUB_WORKSPACE
           ls -l $GITHUB_WORKSPACE/..
-          ls -l $GITHUB_WORKSPACE/../..
+          tree $GITHUB_WORKSPACE/../..
 #        run: cat manifest.txt
 
 #      - name: Install gtest
